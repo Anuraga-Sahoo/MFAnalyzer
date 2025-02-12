@@ -1,0 +1,136 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mutual Fund Analyzer Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>FinE - Mutual Fund Analyzer Pro</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard">
+            <div class="input-card">
+                <h2><i class="fas fa-search"></i> Mutual Fund Analysis</h2>
+                <div class="input-form">
+                    <div class="form-group">
+                        <label for="fundCode">
+                            <i class="fas fa-hashtag"></i> Mutual Fund Code
+                        </label>
+                        <input type="text" id="fundCode" placeholder="e.g., 119598" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="startDate">
+                            <i class="far fa-calendar-alt"></i> Start Date
+                        </label>
+                        <input type="date" id="startDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="riskAppetite">
+                            <i class="fas fa-chart-pie"></i> Risk Appetite
+                        </label>
+                        <select id="riskAppetite" required>
+                            <option value="low">Conservative (Low Risk)</option>
+                            <option value="medium" selected>Balanced (Medium Risk)</option>
+                            <option value="high">Aggressive (High Risk)</option>
+                        </select>
+                    </div>
+                    
+                    <button onclick="analyzeFund()" class="analyze-btn">
+                        <i class="fas fa-analytics"></i> Analyze Fund
+                    </button>
+                </div>
+            </div>
+
+            <div id="loader" class="loader-container hidden">
+                <div class="loader"></div>
+                <p>Analyzing fund data...</p>
+            </div>
+
+            <div id="results" class="results hidden">
+                <div class="fund-header">
+                    <i class="fas fa-fund"></i>
+                    <h2 id="fundName"></h2>
+                </div>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>Absolute Returns</h3>
+                            <p id="absoluteReturns" class="metric-value"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>CAGR</h3>
+                            <p id="cagr" class="metric-value"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>Sharpe Ratio</h3>
+                            <p id="sharpeRatio" class="metric-value"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recommendation-card">
+                    <div class="recommendation-header">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>Investment Recommendation</h3>
+                    </div>
+                    <div class="recommendation-content">
+                        <p id="recommendationText" class="recommendation-value"></p>
+                        <p id="recommendationReason" class="recommendation-reason"></p>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3><i class="fas fa-chart-area"></i> NAV Trend</h3>
+                        <div class="chart-container">
+                            <img id="navPlot" alt="NAV Trend">
+                        </div>
+                    </div>
+            
+                    <div class="chart-card">
+                        <h3><i class="fas fa-chart-line"></i> Rolling Returns</h3>
+                        <div class="chart-container">
+                            <img id="returnsPlot" alt="Rolling Returns">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer", align="center">
+        <p>© 2025 FinE - Financial Empowerment for Everyone. All rights reserved.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
