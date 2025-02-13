@@ -3,7 +3,7 @@
     /* --primary-color: #2563eb; */
     --primary-color: #5E23CF;
     --primary-dark: #1d4ed8;
-    --secondary-color: #64748b;
+    --secondary-color: #d5d7db;
     /* --background-color: #f1f5f9; */
     --background-color: #131414;
     /* --card-background: #ffffff; */
@@ -49,7 +49,9 @@ body {
     top: 0;
     z-index: 100;
 }
-
+span{
+    font-size: 2rem;
+}
 .nav-content {
     max-width: 1400px;
     margin: 0 auto;
@@ -60,12 +62,13 @@ body {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 700;
-    background: linear-gradient(rgb(244, 240, 240), rgb(79, 26, 141));
+    background: linear-gradient(to right, rgb(244, 240, 240), rgb(99, 10, 242), rgb(99, 10, 242));
     color: transparent;
     background-clip: text;
     -webkit-background-clip: text;
+    /* color: rgb(213, 67, 67); */
 }
 
 .logo i {
@@ -123,15 +126,24 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
-    /* background-color: red; */
+    /* width: 20%;
+    background-color: red; */
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    /* width:20%; */
+    width:20%;
     /* background-color: red; */
+}
+.btn-box{
+    /* background-color: red; */
+    height: 5rem;
+    justify-content: start;
+    align-items: end;
+    display: flex;
+    width: 20%;
 }
 input[type="date"]::-webkit-calendar-picker-indicator {
     /* display: none; */
@@ -142,10 +154,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 label {
     font-weight: 500;
-    background: linear-gradient(rgb(244, 240, 240), rgb(79, 26, 141));
-    color:  transparent;
-    background-clip: text;
-    -webkit-background-clip: text;
+    /* background: linear-gradient(rgb(244, 240, 240), rgb(79, 26, 141)); */
+    color:  white;
+    /* background-clip: text;
+    -webkit-background-clip: text; */
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -159,7 +171,10 @@ label {
     top: 2rem;
     left: 28.5rem; */
   }
-
+#fundCode{
+    background-color: #555656;
+    border: none;
+}
 .row{
     display: flex;
     /* justify-content: center; */
@@ -400,6 +415,9 @@ option{
     cursor: pointer;
 
 }
+#info{
+    font-size: small;
+}
 
 .chart-card:hover{
     background-color: black;
@@ -440,20 +458,145 @@ option{
     display: none;
 }
 
+/* ======================error popup================== */
+.error{
+    /* background-color: rgb(101, 149, 190); */
+    z-index: 1;
+    padding: 20px;
+    border-radius: 20px;
+    height: 17rem;
+    width: 25rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2rem;
+    box-shadow: 0 0 10px rgb(46, 46, 46);
+    background-color: #131414;
+    position: absolute; /* Positioning relative to the parent */
+    top: 50%; /* Move down by 50% of the parent's height */
+    left: 50%; /* Move right by 50% of the parent's width */
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  .circle{
+    border-radius: 100%;
+    height: 5rem;
+    width: 5rem;
+    background-color: rgb(214, 82, 82);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .fa-bomb{
+   font-size: 2.5rem;
+  }
+  #errormsg{
+    font-size: 1.5rem;
+  }
+  /* =========================================== */
+
+
+  /* =======================for tab view ================= */
 @media (max-width: 768px) {
     .container {
         padding: 1rem;
     }
     
-    .input-form {
+    /* .input-form {
         grid-template-columns: 1fr;
-    }
+    } */
+     .input-card{
+        /* background-color: blue; */
+        display: grid;
+        grid-template-columns: auto auto;
+     }
+     .form-group{
+        width: 100%;
+        /* background-color: red; */
+     }
     
     .metrics-grid {
-        grid-template-columns: 1fr;
+        /* grid-template-columns: 1fr; */
+        grid-template-columns: auto auto auto;
+        gap: 1rem;
+    }
+    .metric-card{
+        padding: 0.8rem;
+        width: max-content;
+    }
+    .chart-card{
+        width: 100%;
+    }
+    .result-box{
+        /* background-color: blue; */
+        position: absolute;
+        top: 16.8rem;
+    }
+    .charts-grid {
+        /* grid-template-columns: 1fr; */
+        grid-template-columns: auto auto;
+    }
+    .btn-box{
+        /* width: 200%; */
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        gap: 0;
+        width: 100%;
+        
     }
     
-    .charts-grid {
-        grid-template-columns: 1fr;
+}
+/* =========================================== */
+
+/* =====================for mobile view================== */
+@media (max-width: 425px) {
+    /* body{
+        background-color: red;
+    } */
+    .input-card{
+        /* background-color: blue; */
+        display: grid;
+        grid-template-columns: auto;
+     }
+     /* span{
+        display: none;
+     } */
+     h2{
+        font-size: 1.2rem;
+     }
+
+     .metrics-grid {
+        /* grid-template-columns: 1fr; */
+        grid-template-columns: auto;
+        gap: 1rem;
+    }
+    .metric-card{
+        padding: 0.8rem;
+        width: 100%;
+    }
+    /* .chart-card{
+        width: 100%;
+    } */
+
+
+
+     .charts-grid {
+        /* grid-template-columns: 1fr; */
+        grid-template-columns: auto;
+    }
+    .results{
+        padding: 1rem;
+    }
+    .result-box{
+        /* background-color: blue; */
+        position: absolute;
+        top: 17.8rem;
+    }
+    .btn-box{
+        justify-content: center;
+        align-items: center;
     }
 }

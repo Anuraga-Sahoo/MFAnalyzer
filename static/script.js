@@ -45,6 +45,7 @@ async function analyzeFund() {
 
 
         const data = await response.json();
+        console.log(data)
 
         if (!data.success) {
             throw new Error(data.error);
@@ -55,8 +56,21 @@ async function analyzeFund() {
         document.getElementById('absoluteReturns').textContent = `${data.absoluteReturns}%`;
         document.getElementById('cagr').textContent = `${data.cagr}%`;
         document.getElementById('sharpeRatio').textContent = data.sharpeRatio;
-        document.getElementById('recommendationText').textContent = `${data.recommendation}`;
+        
         document.getElementById('recommendationReason').textContent = data.reason;
+        // conditional recomendation of color change
+        if(data.recommendation.toLowerCase().includes("exit")){
+          document.getElementById('recommendationText').textContent = `${data.recommendation}`;
+          document.getElementById('recommendationText').style.color = "rgb(255, 3, 3)"
+        }
+        else if(data.recommendation.toLowerCase().includes("hold")){
+          document.getElementById('recommendationText').textContent = `${data.recommendation}`;
+          document.getElementById('recommendationText').style.color = "rgb(238, 131, 16)"
+        }
+        else{
+          document.getElementById('recommendationText').textContent = `${data.recommendation}`;
+          document.getElementById('recommendationText').style.color = "rgb(32, 139, 57)"
+        }
 
         // Update plots
         document.getElementById('navPlot').src = `data:image/png;base64,${data.navPlot}`;
@@ -65,7 +79,21 @@ async function analyzeFund() {
         // Show results
         document.getElementById('results').classList.remove('hidden');
     } catch (error) {
-        alert(`Error: ${error.message}`);
+      console.log(error.message)
+      if(error.message === 'single positional indexer is out-of-bounds'){
+        // alert(`Error: ${error.message}`);
+        const errorpop = document.getElementById('error')
+        const errormsg = document.getElementById('errormsg')
+        errormsg.innerText = `Fund does not exist for selected Investment Date`
+        errorpop.style.display = "flex"
+
+
+      setInterval(()=>{
+         errorpop.style.display = "none"
+         
+      },5000)
+        // alert("Enter a valid Date")
+      }
     } finally {
         // Hide loader
         document.getElementById('loader').classList.add('hidden');
@@ -179,7 +207,7 @@ self.onmessage = function (e) {
     } else {
       resultsBox.innerHTML = "";
     //   schemeCodeDisplay.style.display = "none";
-    fundCode.value = ' '
+    fundCode.value = 'Fund Code'
 
     }
   };
@@ -189,7 +217,7 @@ self.onmessage = function (e) {
     if (result.length === 0) {
       resultsBox.innerHTML = "<p class='noresultfound'>No results found</p>";
     //   schemeCodeDisplay.style.display = "none";
-     fundCode.value = ' '
+     fundCode.value = 'Fund Code'
 
       return;
     }
@@ -216,4 +244,25 @@ self.onmessage = function (e) {
     fundCode.value = schemeCode
     // schemeCodeDisplay.innerHTML = `<p class="code"><span>Scheme Code :</span> <strong>${schemeCode}</strong></p>`;
   }
+
+  let infos = document.querySelectorAll('.fa-solid.fa-circle-info')
+  console.log(infos)
+
+  infos.forEach((info, index)=>{
+    console.log(info)
+    info.addEventListener('click', ()=>{
+      console.log( typeof(index))
+      if(index == 0){
+        alert("Absolute Return refers to the Total Return on Investment generates over a specific period, expressed as a percentage of the initial investment. ")
+      }
+      else if(index === 1){
+        alert("CAGR is the Average Annual Growth Rate of an investment over a period of time, assuming the investment grows at a steady rate each year. It helps smooth out fluctuations and provides a more accurate measure of long-term growth.")
+      }
+      else if(index === 2){
+        alert("The Sharpe Ratio is a measure used to evaluate the risk-adjusted return of an investment. It tells you how much excess return you are getting for the extra risk taken compared to a risk-free asset (like government bonds).")
+      }
+    })
+  })
+
+
 });

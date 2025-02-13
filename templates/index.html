@@ -15,15 +15,20 @@
         <div class="nav-content">
             <div class="logo">
                 <i class="fas fa-chart-line"></i>
-                <span>FinE - Mutual Fund Analyzer Pro</span>
+                <span>FinE</span>
             </div>
         </div>
     </nav>
 
+    <div class="error" id="error">
+        <div class="circle"><i class="fa-solid fa-bomb"></i></div>
+        <p id="errormsg">Fund does not exist for selected Investment Date</p>
+      </div>
+
     <div class="container">
         <div class="dashboard">
             <div class="mfAnalysis">
-                <h2><i class="fas fa-search"></i> Mutual Fund Analysis</h2>
+                <h2><i class="fas fa-search"></i> Mutual Fund Analyzer Pro</h2>
             </div>
             <div class="input-card">
                 <!-- <div class="input-form"> -->
@@ -33,7 +38,7 @@
                         </label>
 
 
-                        <input type="text" name="search" id="input-box" placeholder="Search here ...." autocomplete="off" />
+                        <input type="search" name="search" id="input-box" placeholder="Search here ...." autocomplete="off" required/>
 
                     </div>
                     <!-- <div class="result-box"></div> -->
@@ -45,12 +50,12 @@
                     <label for="fundCode">
                         <i class="fas fa-hashtag"></i> Mutual Fund Code
                     </label>
-                    <input type="text" id="fundCode" placeholder="e.g., 119598" required />
+                    <input type="text" id="fundCode" placeholder="Fund code" required disabled/>
                 </div>
 
                 <div class="form-group">
                     <label for="startDate">
-                        <i class="far fa-calendar-alt"></i> Start Date
+                        <i class="far fa-calendar-alt"></i> Investment Date
                     </label>
                     <input type="date" id="startDate" required />
                 </div>
@@ -65,10 +70,11 @@
                         <option value="high">Aggressive (High Risk)</option>
                     </select>
                 </div>
-
-                <button onclick="analyzeFund()" class="analyze-btn">
-                    <i class="fas fa-analytics"></i> Analyze Fund
-                </button>
+                <div class=" btn-box">
+                    <button onclick="analyzeFund()" class="analyze-btn">
+                        <i class="fas fa-analytics"></i> Analyze Fund
+                    </button>
+                </div>
             </div>
             <div class="result-box"></div>
         </div>
@@ -86,11 +92,12 @@
 
             <div class="metrics-grid">
                 <div class="metric-card">
+                    <!-- <i class="fa-solid fa-circle-info"></i> -->
                     <div class="metric-icon">
                         <i class="fas fa-percentage"></i>
                     </div>
                     <div class="metric-content">
-                        <h3>Absolute Returns</h3>
+                        <h3>Absolute Returns <i id="info" class="fa-solid fa-circle-info"></i></h3>
                         <p id="absoluteReturns" class="metric-value"></p>
                     </div>
                 </div>
@@ -100,7 +107,7 @@
                         <i class="fas fa-chart-line"></i>
                     </div>
                     <div class="metric-content">
-                        <h3>CAGR</h3>
+                        <h3>CAGR <i id="info" class="fa-solid fa-circle-info"></i></h3>
                         <p id="cagr" class="metric-value"></p>
                     </div>
                 </div>
@@ -110,7 +117,7 @@
                         <i class="fas fa-balance-scale"></i>
                     </div>
                     <div class="metric-content">
-                        <h3>Sharpe Ratio</h3>
+                        <h3>Sharpe Ratio <i id="info" class="fa-solid fa-circle-info"></i></h3>
                         <p id="sharpeRatio" class="metric-value"></p>
                     </div>
                 </div>
