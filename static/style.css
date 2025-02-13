@@ -599,4 +599,7 @@ option{
         justify-content: center;
         align-items: center;
     }
+    .error{
+        width: 90%;
+    }
 }

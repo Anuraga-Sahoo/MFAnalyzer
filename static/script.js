@@ -90,8 +90,7 @@ async function analyzeFund() {
 
       setInterval(()=>{
          errorpop.style.display = "none"
-         
-      },5000)
+      },3000)
         // alert("Enter a valid Date")
       }
     } finally {
