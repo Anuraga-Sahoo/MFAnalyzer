@@ -29,6 +29,7 @@ async function analyzeFund() {
     document.getElementById('results').classList.add('hidden');
 
     try {
+      loader.style.display = "flex";
         const response = await fetch('/analyze', {
             method: 'POST',
             headers: {
@@ -40,6 +41,8 @@ async function analyzeFund() {
                 riskAppetite
             })
         });
+      loader.style.display = "none";
+
 
         const data = await response.json();
 
@@ -74,4 +77,143 @@ document.addEventListener('DOMContentLoaded', () => {
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
     document.getElementById('startDate').valueAsDate = oneYearAgo;
+});
+
+
+
+
+
+// ===================================================
+let selectInput; // Declare the function in the global scope
+
+document.addEventListener("DOMContentLoaded", () => {
+  const resultsBox = document.querySelector(".result-box");
+  const inputBox = document.getElementById("input-box");
+  const fundCode = document.getElementById('fundCode')
+//   const schemeCodeDisplay = document.getElementById("scheme-code-display");
+  const loader = document.getElementById("loader");
+
+  let availableKeywords = []; // This will hold the data from the API
+  let worker;
+
+  // Create a Blob URL for the worker script
+  const workerScript = `
+function wildcardToRegex(wildcard) {
+  let pattern = wildcard
+    .replace(/[-/\\^$+?.()|[\]{}]/g, '\\$&') // Escape special characters
+    .replace(/\\*/g, '.*') // Convert * to regex wildcard
+    .replace(/\\?/g, '.'); // Convert ? to match any single character
+
+  return new RegExp(pattern, 'i'); // Case-insensitive search
+}
+
+self.onmessage = function (e) {
+  const { data, query } = e.data;
+  if (!query) {
+    self.postMessage([]);
+    return;
+  }
+
+  const trimmedQuery = query.trim();
+  let filteredResults = [];
+
+  if (trimmedQuery.includes('*') || trimmedQuery.includes('?')) {
+    // Handle wildcard search
+    const regex = wildcardToRegex(trimmedQuery);
+    filteredResults = data.filter(item => regex.test(item.schemeName));
+  } else {
+    // Handle normal prefix-based search
+    const prefix = trimmedQuery.toLowerCase();
+    filteredResults = data.filter(item => 
+      item.schemeName.toLowerCase().startsWith(prefix)
+    );
+  }
+
+  self.postMessage(filteredResults.slice(0, 10)); // Limit to 10 results
+};
+`;
+
+  const blob = new Blob([workerScript], { type: "application/javascript" });
+  const workerUrl = URL.createObjectURL(blob);
+
+  // Initialize the Web Worker
+  if (window.Worker) {
+    worker = new Worker(workerUrl);
+    worker.onmessage = (e) => {
+      if (
+        e.data.length === 1 &&
+        e.data[0].schemeName.toLowerCase() === inputBox.value.toLowerCase()
+      ) {
+        // schemeCodeDisplay.style.display = "flex";
+        fundCode.value = Number(e.data[0].schemeCode)
+        // schemeCodeDisplay.innerHTML = `<p class="code"><span>Scheme Code :</span> <strong>${e.data[0].schemeCode}</strong></p>`;
+        resultsBox.innerHTML = ""; // Clear results box when a single match is found
+      } else {
+        display(e.data);
+      }
+    };
+  }
+
+  // Fetch data from the API
+  async function getDataFromAPI() {
+    try {
+      loader.style.display = "flex";
+      const response = await fetch("https://api.mfapi.in/mf");
+      availableKeywords = await response.json();
+      console.log("Data fetched successfully");
+      loader.style.display = "none";
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  }
+
+  getDataFromAPI();
+
+  // Handle input keyup event
+  inputBox.onkeyup = function () {
+    const input = inputBox.value;
+    if (input.length && worker) {
+    //   schemeCodeDisplay.style.display = "none";
+    
+      worker.postMessage({ data: availableKeywords, query: input.trim() });
+    } else {
+      resultsBox.innerHTML = "";
+    //   schemeCodeDisplay.style.display = "none";
+    fundCode.value = ' '
+
+    }
+  };
+
+  // Function to display search results
+  function display(result) {
+    if (result.length === 0) {
+      resultsBox.innerHTML = "<p class='noresultfound'>No results found</p>";
+    //   schemeCodeDisplay.style.display = "none";
+     fundCode.value = ' '
+
+      return;
+    }
+    const content = result.map((list) => {
+      return `<li data-scheme-code="${list.schemeCode}" data-scheme-name="${list.schemeName}">${list.schemeName}</li>`;
+    });
+    resultsBox.innerHTML = "<ul>" + content.join("") + "</ul>";
+
+    // Add click event listeners to the list items
+    const listItems = resultsBox.querySelectorAll("li");
+    listItems.forEach(item => {
+      item.addEventListener("click", function() {
+        selectInput(item.dataset.schemeCode, item.dataset.schemeName);
+      });
+    });
+  }
+
+  // Function to select a scheme and display the schemeCode
+  selectInput = function(schemeCode, schemeName) {
+    inputBox.value = schemeName;
+    // schemeCodeDisplay.style.display = "flex";
+    resultsBox.innerHTML = "";
+    console.log(typeof(schemeCode))
+    fundCode.value = schemeCode
+    // schemeCodeDisplay.innerHTML = `<p class="code"><span>Scheme Code :</span> <strong>${schemeCode}</strong></p>`;
+  }
 });
