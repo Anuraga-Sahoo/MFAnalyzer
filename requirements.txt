@@ -6,7 +6,4 @@ seaborn
 datetime
 requests
 scipy
-typing
-io
-base64
 logging
