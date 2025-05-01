@@ -69,7 +69,9 @@ class MutualFundAnalyzer:
             
             nav_df = pd.DataFrame(data['data'])
             nav_df['date'] = pd.to_datetime(nav_df['date'], format='%d-%m-%Y')
+            # print(nav_df['date'])
             nav_df['nav'] = pd.to_numeric(nav_df['nav'])
+            # print(nav_df['nav'] )
             nav_df = nav_df.sort_values('date')
             
             start_date = pd.to_datetime(start_date)
@@ -299,6 +301,11 @@ def analyze():
         
         analyzer = MutualFundAnalyzer()
         nav_data = analyzer.fetch_nav_data(fund_code, start_date)
+        # Convert nav_data to a list of dictionaries for JSON response
+        nav_data_list = [
+            {'date': row['date'].strftime('%Y-%m-%d'), 'nav': row['nav']}
+            for _, row in nav_data.iterrows()
+        ]
         
         absolute_returns = analyzer.calculate_absolute_returns()
         cagr = analyzer.calculate_cagr()
@@ -317,10 +324,13 @@ def analyze():
             'recommendation': recommendation,
             'reason': reason,
             'navPlot': generate_plot_base64(analyzer.plot_nav_trend),
+            # 'navtraind': analyzer.plot_nav_trend,
+            # 'nav_date': nav_dict,
+            'navData': nav_data_list,
             'returnsPlot': generate_plot_base64(lambda: analyzer.plot_rolling_returns([30, 90, 180]))
         }
 
-        logger.info(f"Sending response: {response_data}")
+        # logger.info(f"Sending response: {response_data}")
         return jsonify(response_data)
 
     except Exception as e:

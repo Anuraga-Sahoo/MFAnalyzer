@@ -21,6 +21,10 @@
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
+.hidden{
+    display: none;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -32,7 +36,7 @@ body {
     /* background-color: var(--background-color); */
     /* background: url('./img/bodyBackground.png'); */
     /* background-repeat: no-repeat; */
-    background-color: #1F1F1F;
+    background-color: #141414;
     object-fit: cover;
     color: var(--text-color);
     line-height: 1.6;
@@ -306,7 +310,7 @@ option{
 .fund-header {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    /* gap: 1rem; */
     color: var(--text-color);
 }
 
@@ -364,6 +368,16 @@ option{
  transition: all ease-out 1s;
 
 }
+.recomendationTextContainer{
+
+}
+.recommendation-value{
+    
+    border-radius: 10px;
+    width: fit-content;
+    color: white;
+    padding: 0.5rem;
+}
 .recommendation-card:hover{
  background-color: #131414;
  transition: all ease-in-out 1s;
@@ -374,7 +388,8 @@ option{
  }
  .recommendation-value{
     color: white;
- transition: all ease-in-out 1s;
+    
+    transition: all ease-in-out 1s;
 
  }
 
@@ -387,6 +402,7 @@ option{
     margin-bottom: 1rem;
     color: var(--text-color);
     transition: all ease-in-out 1s;
+    
 
 }
 
@@ -404,8 +420,10 @@ option{
 }
 
 .charts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    display: flex;
+    /* grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); */
+    /* grid-template-columns: auto; */
+    height: fit-content;
     gap: 2rem;
 }
 
@@ -416,20 +434,24 @@ option{
     box-shadow: var(--shadow-md);
     transition: all ease-in 0.8s;
     cursor: pointer;
+    /* height: 10rem; */
 
 }
 #info{
     font-size: small;
 }
 
-.chart-card:hover{
+/* .chart-card:hover{
     background-color: black;
     scale: 1.2;
     transition: all ease-in 0.8s;
-}
+} */
+h3{
 
+    color: #656965;
+}
 .chart-card h3 {
-    color: var(--text-color);
+    /* color: var(--text-color); */
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
@@ -441,6 +463,7 @@ option{
     overflow: hidden;
     border-radius: var(--border-radius);
 }
+
 
 .chart-container img {
     width: 100%;
@@ -498,6 +521,66 @@ option{
   #errormsg{
     font-size: 1.5rem;
   }
+
+  /* nav chat  */
+  .historical-chart{
+    width: 100%;
+    display: flex;
+    /* background-color: red; */
+  }
+  .chart-cards{
+    width: 100%;
+    /* background-color: red; */
+  }
+  .chart-cards
+  .nav-trend-chart-container{
+    width: 100%;
+}
+.widthFull{
+    width: 69rem;
+}
+/* Container to align radio buttons in a row */
+.radio-group {
+    display: flex;
+    gap: 20px; /* Space between buttons */
+    align-items: center;
+    margin: 20px;
+}
+
+  /* Hide default radio button */
+input[type="radio"] {
+    display: none;
+}
+
+/* Style for the label acting as a button */
+.predictionDays{
+    padding: 10px 20px;
+    border: 2px solid #555555;
+    border-radius: 6px;
+    background-color: transparent;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-width: 60px;
+}
+
+/* Style when radio is checked */
+input[type="radio"]:checked + label {
+    background-color: #1f201f;
+    /* border: 2px solid #555555; */
+    border: 2px solid #ffffff;
+
+    color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover effect */
+.predictionDays:hover {
+    background-color: #222223;
+}
   /* =========================================== */
 
 

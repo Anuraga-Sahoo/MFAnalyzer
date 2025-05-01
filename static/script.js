@@ -61,21 +61,32 @@ async function analyzeFund() {
         // conditional recomendation of color change
         if(data.recommendation.toLowerCase().includes("exit")){
           document.getElementById('recommendationText').textContent = `${data.recommendation}`;
-          document.getElementById('recommendationText').style.color = "rgb(255, 3, 3)"
+          document.getElementById('recommendationText').style.color = "white"
+          document.getElementById('recommendationText').style.background = "rgb(255, 3, 3)"
+
         }
         else if(data.recommendation.toLowerCase().includes("hold")){
           document.getElementById('recommendationText').textContent = `${data.recommendation}`;
-          document.getElementById('recommendationText').style.color = "rgb(238, 131, 16)"
+          document.getElementById('recommendationText').style.color = "white"
+          document.getElementById('recommendationText').style.background = "rgb(238, 131, 16)"
+
         }
         else{
           document.getElementById('recommendationText').textContent = `${data.recommendation}`;
-          document.getElementById('recommendationText').style.color = "rgb(32, 139, 57)"
+          document.getElementById('recommendationText').style.color = "white"
+          document.getElementById('recommendationText').style.background = "rgb(32, 139, 57)"
+
         }
 
+ 
+        
         // Update plots
         document.getElementById('navPlot').src = `data:image/png;base64,${data.navPlot}`;
         document.getElementById('returnsPlot').src = `data:image/png;base64,${data.returnsPlot}`;
 
+               // update Nav price Chart
+               updateChart(data)
+        
         // Show results
         document.getElementById('results').classList.remove('hidden');
     } catch (error) {
@@ -264,4 +275,97 @@ self.onmessage = function (e) {
   })
 
 
+
+
 });
+
+  // nav graph
+  function updateChart(data) {
+    // Function to render the chart with specified period (e.g., '7d', '15d', '30d', '6m', '1y')
+    function renderChart(period) {
+        // Map period to number of days
+        let days;
+        switch (period) {
+            case '7d': days = 7; break;
+            case '15d': days = 15; break;
+            case '30d': days = 30; break;
+            case '6m': days = 180; break; // Approximate 6 months as 180 days
+            case '1y': days = 365; break; // Approximate 1 year as 365 days
+            default: days = 7; // Default to 7 days if invalid period
+        }
+
+        // Extract nav and date arrays from navData
+        const nav = data.navData.map(item => item.nav);
+        const navDate = data.navData.map(item => item.date);
+
+        // Get the total number of data points
+        const totalNavData = nav.length;
+
+        // Ensure days does not exceed totalNavData
+        if (days > totalNavData) {
+            days = totalNavData; // Show all data if requested period exceeds available data
+        }
+
+        // Slice the last 'days' elements for x and y (most recent data)
+        const xData = navDate.slice(-days);
+        const yData = nav.slice(-days);
+
+        // Define the trace for the chart
+        const traces = [{
+            name: 'Nav Chart',
+            x: xData,
+            y: yData,
+            type: 'scatter',
+            mode: 'lines', // Ensure line chart (default behavior)
+            line: { color: '#16a34a' }
+        }];
+
+        // Define the layout
+        const layout = {
+            title: `Nav Chart - Last ${period}`,
+            autosize: true,
+            paper_bgcolor: '#141414',
+            plot_bgcolor: '#141414',
+            font: { color: 'white' },
+            xaxis: { title: 'Date' },
+            yaxis: { title: 'NAV' },
+            showlegend: true,
+            legend: { orientation: 'h', y: -0.2 }
+        };
+
+        // Render the chart
+        Plotly.newPlot('navChart', traces, layout);
+    }
+
+    // Select radio buttons
+    const sevenDay = document.getElementById("7d");
+    const fifteenDay = document.getElementById("15d");
+    const thirtyDay = document.getElementById("30d");
+    const sixMonth = document.getElementById("6m");
+    const oneYear = document.getElementById("1y");
+
+    // Event listeners for radio buttons
+    sevenDay.addEventListener("click", () => {
+        renderChart('7d');
+    });
+
+    fifteenDay.addEventListener("click", () => {
+        renderChart('15d');
+    });
+
+    thirtyDay.addEventListener("click", () => {
+        renderChart('30d');
+    });
+
+    sixMonth.addEventListener("click", () => {
+        renderChart('6m');
+    });
+
+    oneYear.addEventListener("click", () => {
+        renderChart('1y');
+    });
+
+    // Set default to 7 days
+    oneYear.checked = true; // Ensure 7d is checked by default
+    renderChart('1y'); // Render chart with 7 days initially
+}

@@ -6,6 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mutual Fund Analyzer Pro</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
@@ -86,9 +87,60 @@
 
         <div id="results" class="results hidden">
             <div class="fund-header">
-                <i class="fas fa-fund"></i>
+                <!-- <i class="fas fa-fund"></i> -->
                 <h2 id="fundName"></h2>
             </div>
+
+            <!-- historical chart shows -->
+     <div class="historical-chart">
+    
+        <div class="chart-cards">
+            <div class="chart-header">
+                <h3><i class="fas fa-chart-area"></i> Nav Trend</h3>
+
+                <div class="chart-actions-historical-price">
+                    <div class="radio-group">
+                        <input type="radio" id="7d" name="days" value="7">
+                        <label for="7d" class="predictionDays">7d</label>
+                
+                        <input type="radio" id="15d" name="days" value="15">
+                        <label for="15d" class="predictionDays">15d</label>
+                
+                        <input type="radio" id="30d" name="days" value="30">
+                        <label for="30d" class="predictionDays">1M</label>
+                        
+                        <input type="radio" id="6m" name="days" value="180">
+                        <label for="6m" class="predictionDays">6M</label>
+
+                        <input type="radio" id="1y" name="days" value="365">
+                        <label for="1y" class="predictionDays">1Y</label>
+
+                        <!-- <input type="radio" id="5y" name="days" value="1825">
+                        <label for="5y" class="predictionDays">5Y</label> -->
+
+                        
+                        <!-- <input type="radio" id="max" name="days" value="30">
+                        <label for="max" class="predictionDays">Max</label> -->
+                    </div>
+
+                </div>
+            </div>
+            <div class="nav-chart-container">
+                <!-- <canvas id="futurePredictChart"></canvas> -->
+                <div id="navChart" class="widthFull"></div>
+                 
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+            <!-- <div class="fund-header">
+                <i class="fas fa-fund"></i>
+                <h2 id="fundName"></h2>
+            </div> -->
 
             <div class="metrics-grid">
                 <div class="metric-card">
@@ -127,15 +179,18 @@
                 <div class="recommendation-header">
                     <i class="fas fa-lightbulb"></i>
                     <h3>Investment Recommendation</h3>
-                </div>
-                <div class="recommendation-content">
+                    <!-- <div class="recomendationTextContainer"> -->
+
+                        <!-- </div> -->
+                    </div>
+                    <div class="recommendation-content">
                     <p id="recommendationText" class="recommendation-value"></p>
                     <p id="recommendationReason" class="recommendation-reason"></p>
                 </div>
             </div>
 
             <div class="charts-grid">
-                <div class="chart-card">
+                <div class="chart-card hidden">
                     <h3><i class="fas fa-chart-area"></i> NAV Trend</h3>
                     <div class="chart-container">
                         <img id="navPlot" alt="NAV Trend" />
